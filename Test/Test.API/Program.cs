@@ -1,4 +1,7 @@
 
+using Test.API.Filters;
+using Test.API.Middleware;
+
 namespace Test.API
 {
     public class Program
@@ -9,7 +12,7 @@ namespace Test.API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(opt => opt.Filters.Add(new RequestValidationFilter()));
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -24,7 +27,9 @@ namespace Test.API
             }
 
             app.UseAuthorization();
-
+            
+            app.UseUnhandledExceptionLogging();
+            app.UseRequestCulture();
 
             app.MapControllers();
 
