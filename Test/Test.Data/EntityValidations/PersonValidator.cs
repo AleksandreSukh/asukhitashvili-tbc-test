@@ -61,12 +61,6 @@ namespace Test.Data.EntityValidations
                     .Cascade(CascadeMode.Continue)
                     .Must(c => validCities.Contains(c.Value))
                     .WithErrorCode(ValidationError.CityIsNotValid));
-
-            //When(e => !string.IsNullOrEmpty(e.Picture),
-            //    () => RuleFor(e => e.Picture)
-            //        .Cascade(CascadeMode.Continue)
-            //        .Must(c => ValidateImagePath)
-            //        .WithErrorCode(ValidationError.PictureFileCouldNotBeFound));
         }
     }
 }

@@ -1,6 +1,7 @@
 
 using Test.API.Filters;
 using Test.API.Middleware;
+using Test.Data;
 
 namespace Test.API
 {
@@ -16,6 +17,8 @@ namespace Test.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped(c => new UnitOfWork(c.GetRequiredService<TestDbContext>()));
 
             var app = builder.Build();
 
