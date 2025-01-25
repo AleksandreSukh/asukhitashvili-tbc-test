@@ -1,12 +1,13 @@
 ﻿using System.Globalization;
+using Test.Data.EntityValidations;
 
 namespace Test.API
 {
     public static class DataValidationMessages
     {
-        private static Dictionary<string, Dictionary<ValidationMessage, string>>? _localizations;
+        private static Dictionary<string, Dictionary<ValidationError, string>>? _localizations;
 
-        public static string GetMessageLocalizedString(ValidationMessage message)
+        public static string ToLocalizedString(this ValidationError message)
         {
             var language = CultureInfo.CurrentCulture.Name;
             
@@ -16,7 +17,7 @@ namespace Test.API
         }
 
         //Sample method for initializing localizations dictionary
-        public static void InitializeFromSource(Dictionary<string, Dictionary<ValidationMessage, string>>? localizations)
+        public static void InitializeFromSource(Dictionary<string, Dictionary<ValidationError, string>>? localizations)
         {
             _localizations = localizations;
         }

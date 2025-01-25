@@ -5,9 +5,11 @@ namespace Test.Data.EntityValidations
 {
     public class PersonValidator : AbstractValidator<Person>
     {
-        private static readonly HashSet<string> ValidGenders = new HashSet<string>() { "male", "female" };
-        public PersonValidator()
+
+        public PersonValidator(TestDbContext context)
         {
+            var validCities = context.Cities.Select(c => c.Id).ToHashSet(); //TODO: Can be initialized into static cache depending on how often do we need to add new cities
+
             RuleFor(e => e.Name)
                 .Cascade(CascadeMode.Continue)
                 .NotEmpty()
@@ -34,16 +36,37 @@ namespace Test.Data.EntityValidations
                 .Cascade(CascadeMode.Continue)
                 .NotEmpty()
                 .WithErrorCode(ValidationError.GenderMustNotBeEmpty)
-                .Must(g => ValidGenders.Contains(g))
+                .Must(g => g.IsValidGender())
                 .WithErrorCode(ValidationError.GenderMustBeEitherMaleOrFemale);
+
+            RuleFor(e => e.IdNumber)
+                .Cascade(CascadeMode.Continue)
+                .NotEmpty()
+                .WithErrorCode(ValidationError.IdNumberMustNotBeEmpty)
+                .Length(11)
+                .WithErrorCode(ValidationError.IdNumberMustBe11CharsLong);
+
+            RuleFor(e => e.BirthDate)
+                .Cascade(CascadeMode.Continue)
+                .NotNull()
+                .WithErrorCode(ValidationError.BirthDateMustBeSpecified);
+
+            When(e => e.BirthDate.HasValue,
+                () => RuleFor(i => i.BirthDate)
+                    .Must(d => d!.Value.IsOlderThanYears(18))
+                    .WithErrorCode(ValidationError.MustBeOlderThan18Years));
+
+            When(e => e.CityId != null,
+                () => RuleFor(e => e.CityId)
+                    .Cascade(CascadeMode.Continue)
+                    .Must(c => validCities.Contains(c.Value))
+                    .WithErrorCode(ValidationError.CityIsNotValid));
+
+            //When(e => !string.IsNullOrEmpty(e.Picture),
+            //    () => RuleFor(e => e.Picture)
+            //        .Cascade(CascadeMode.Continue)
+            //        .Must(c => ValidateImagePath)
+            //        .WithErrorCode(ValidationError.PictureFileCouldNotBeFound));
         }
-    }
-
-    public class PersonalConnectionValidator
-    {
-    }
-
-    public class PhoneNumberValidator
-    {
     }
 }

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Test.Contracts\Test.Contracts.csproj" />
+    <ProjectReference Include="..\Test.Data\Test.Data.csproj" />
     <ProjectReference Include="..\Test.Infrastructure.Logging\Test.Infrastructure.Logging.csproj" />
   </ItemGroup>
 

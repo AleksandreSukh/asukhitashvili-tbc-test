@@ -3,7 +3,6 @@
 public enum ValidationError
 {
     UnknownError,
-    DataFormatIsNotValid,
     NameMustNotBeEmpty,
     NameLenghtMustBeAtLeast2Symbols,
     NameLenghtMustBeAtMost50Symbols,
@@ -13,5 +12,12 @@ public enum ValidationError
     SurnameLenghtMustBeAtMost50Symbols,
     SurnameMustBeGeorgianOrLatinWord,
     GenderMustNotBeEmpty,
-    GenderMustBeEitherMaleOrFemale
+    GenderMustBeEitherMaleOrFemale,
+    IdNumberMustNotBeEmpty,
+    IdNumberMustBe11CharsLong,
+    BirthDateMustBeSpecified,
+    MustBeOlderThan18Years,
+    CityIsNotValid,
+    ConnectionTypeIsNotValid,
+    InvalidPhoneNumber
 }
